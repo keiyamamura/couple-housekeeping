@@ -14,4 +14,17 @@ define('THANKS_URL', 'http://localhost:8888/portfolio/public/join/thanks.php');
 define('LOGIN_URL', 'http://localhost:8888/portfolio/public/join/login.php');
 define('MAIN_URL', 'http://localhost:8888/portfolio/public/index.php');
 
-require_once(__DIR__ . '/functions.php');
+spl_autoload_register(function ($class) {
+	$prefix = 'App\\';
+
+	if (strpos($class, $prefix) === 0) {
+		$filename = sprintf(__DIR__ . '/%s.php', substr($class, strlen($prefix)));
+
+		if (file_exists($filename)) {
+			require($filename);
+		} else {
+			echo 'File not found: ' . $filename;
+			exit();
+		}
+	}
+});

@@ -1,24 +1,29 @@
 <?php
 require(__DIR__ . '/../app/config.php');
 
-$pdo = getPdoInstance();
+use App\Book;
+use App\Calendar;
+use App\Database;
+use App\Info;
+use App\Member;
+use App\Utils;
+
+$pdo = Database::getInstance();
 
 if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
 	$get_id = ($_SESSION['id']);
 	$get_name = ($_SESSION['name']);
 
-	// maleデータ と femaleデータの取得
-	$members_data = [];
-	for ($i = 1; $i <= 2; $i++) {
-		$members_data[] = getMembersData($pdo, $get_id, $i);
-	}
-	$male = $members_data[0];
-	$female = $members_data[1];
+	// memberの取得
+	$member_info = [];
+	$member_info[0] = new Member($pdo, $get_id, 1);
+	$member_info[1] = new Member($pdo, $get_id, 2);
+	$male = $member_info[0]->getData();
+	$female = $member_info[1]->getData();
 
 	// 項目データの取得
-	$items = getItems($pdo);
-
-	//カレンダー
+	$items = new Info($pdo);
+	$items = $items->showItemsData();
 
 	//日付情報を取得
 	if (isset($_POST['calendar'])) {
@@ -44,48 +49,52 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
 		}
 	}
 
+	//カレンダー
+	$Calendar = new Calendar($get_y, $get_m, $date, Utils::h($_SESSION['token']));
+
+	// 日付の送信
+	Utils::sendDate($get_y, $get_m);
+
+	// 日付の結合
 	$date_check = sprintf('%s-%s', $get_y, $get_m) . '%';
 
-	$send_date = [];
-	$send_date['year'] = $get_y;
-	$send_date['month'] = $get_m;
-	$_SESSION['date'] = $send_date;
 	$male_subtotal_amount = 0;
 	$female_subtotal_amount = 0;
 } else {
 	header('Location: ' . LOGIN_URL);
 	exit();
 }
+
 // header
 require_once(__DIR__ . '/../app/_parts/_header.php');
 ?>
 
 <h2 class="date">
-	<?php h(get_rsv_calendar($get_y, $get_m, $date, h($_SESSION['token']))); ?>
+	<?php Utils::h($Calendar->getRsv()); ?>
 </h2>
 
 <section id="main_page">
 	<div class="row">
-		<div id="male" class="col-sm-6">
-			<h3 class="amount"><span><?php echo h($male->name); ?></span> の支払額</h3>
+		<div id="male" class="col-md-6">
+			<h3 class="amount"><span><?php echo Utils::h($male->name); ?></span> の支払額</h3>
 			<table class="table table-borderless">
 				<tbody>
 					<?php foreach ($items as $item) : ?>
 						<tr>
 							<th scope="row">
-								<a href="show.php?item=<?php echo h($item->id); ?>&gender=<?php echo h($male->gender); ?>" class="category btn btn-outline-dark">
-									<?php echo h($item->name); ?>
+								<a href="show.php?item=<?php echo Utils::h($item->id); ?>&gender=<?php echo Utils::h($male->gender); ?>" class="category btn btn-outline-dark">
+									<?php echo Utils::h($item->name); ?>
 								</a>
 							</th>
 							<td>
 								<?php
-								$male_purchase_price = getBooksPurchasePrice($pdo, $item->id, $male->id, $date_check);
-								echo h(num($male_purchase_price));
-								$male_subtotal_amount += $male_purchase_price
+								$male_purchase_price = new Book($pdo, $item->id, $male->id, $date_check);
+								echo Utils::h(Utils::num($male_purchase_price->getPurchasePrice()));
+								$male_subtotal_amount += $male_purchase_price->getPurchasePrice();
 								?>円
 							</td>
 							<td>
-								<a href="add.php?item=<?php echo h($item->id); ?>&gender=<?php echo h($male->gender); ?>" class="btn btn-outline-success">追加</a>
+								<a href="add.php?item=<?php echo Utils::h($item->id); ?>&gender=<?php echo Utils::h($male->gender); ?>" class="btn btn-outline-success">追加</a>
 							</td>
 						</tr>
 					<?php endforeach; ?>
@@ -94,33 +103,32 @@ require_once(__DIR__ . '/../app/_parts/_header.php');
 					<tr>
 						<th scope="row">小計</th>
 						<td>
-							<?php echo h(num($male_subtotal_amount)); ?>円</td>
+							<?php echo  Utils::h(Utils::num($male_subtotal_amount)); ?>円</td>
 					</tr>
 				</tfoot>
 			</table>
 		</div>
 
-		<div id="famale" class="col-sm-6">
-			<h3 class="amount"><span><?php echo h($female->name); ?></span> の支払額</h3>
+		<div id="famale" class="col-md-6">
+			<h3 class="amount"><span><?php echo Utils::h($female->name); ?></span> の支払額</h3>
 			<table class="table table-borderless">
 				<tbody>
 					<?php foreach ($items as $item) : ?>
 						<tr>
 							<th scope="row">
-								<a href="show.php?item=<?php echo h($item->id); ?>&gender=<?php echo h($female->gender); ?>" class="category btn btn-outline-dark">
-									<?php echo h($item->name); ?>
+								<a href="show.php?item=<?php echo Utils::h($item->id); ?>&gender=<?php echo Utils::h($female->gender); ?>" class="category btn btn-outline-dark">
+									<?php echo Utils::h($item->name); ?>
 								</a>
 							</th>
 							<td>
 								<?php
-								$female_purchase_price = getBooksPurchasePrice($pdo, $item->id, $female->id, $date_check);
-								echo h(num($female_purchase_price));
-
-								$female_subtotal_amount += $female_purchase_price;
+								$female_purchase_price = new Book($pdo, $item->id, $female->id, $date_check);
+								echo Utils::h(Utils::num($female_purchase_price->getPurchasePrice()));
+								$female_subtotal_amount += $female_purchase_price->getPurchasePrice();
 								?>円
 							</td>
 							<td>
-								<a href="add.php?item=<?php echo h($item->id); ?>&gender=<?php echo h($female->gender); ?>" class="btn btn-outline-success">追加</a>
+								<a href="add.php?item=<?php echo Utils::h($item->id); ?>&gender=<?php echo Utils::h($female->gender); ?>" class="btn btn-outline-success">追加</a>
 							</td>
 						</tr>
 					<?php endforeach; ?>
@@ -128,25 +136,26 @@ require_once(__DIR__ . '/../app/_parts/_header.php');
 				<tfoot>
 					<tr>
 						<th scope="row">小計</th>
-						<td><?php echo h(num($female_subtotal_amount)); ?>円</td>
+						<td><?php echo  Utils::h(Utils::num($female_subtotal_amount)); ?>円</td>
 					</tr>
 				</tfoot>
 			</table>
 		</div>
 	</div>
+
 	<div class="total">
 		<div class="total-amount">
 			<p>２人の合計金額</p>
-			<span><?php totalAmount($male_subtotal_amount, $female_subtotal_amount); ?></span> 円
+			<span><?php Utils::totalAmount($male_subtotal_amount, $female_subtotal_amount); ?></span> 円
 		</div>
 		<div class="total-amount">
 			<p>差額</p>
-			<span><?php removeDifference($male_subtotal_amount, $female_subtotal_amount); ?></span> 円
+			<span><?php Utils::removeDifference($male_subtotal_amount, $female_subtotal_amount); ?></span> 円
 		</div>
 		<div class="total-amount">
-			<p>小計の少ない人が、<br>
-				多い人へ支払う額</p>
-			<span><?php perPersonAmount($male_subtotal_amount, $female_subtotal_amount); ?></span> 円
+			<p>小計の少ない人が<br>
+				支払う額</p>
+			<span><?php Utils::perPersonAmount($male_subtotal_amount, $female_subtotal_amount); ?></span> 円
 		</div>
 	</div>
 </section>

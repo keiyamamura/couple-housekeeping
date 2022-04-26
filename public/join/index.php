@@ -2,7 +2,12 @@
 
 require(__DIR__ . '/../../app/config.php');
 
-createToken();
+use App\Database;
+use App\Token;
+use App\Register;
+use App\Utils;
+
+Token::create();
 
 if (isset($_GET['action']) && $_GET['action'] === 'rewrite' && isset($_SESSION['form'])) {
 	$form = $_SESSION['form'];
@@ -19,7 +24,7 @@ $error = [];
 
 // フォームの内容をチェック
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	validateToken();
+	Token::validate();
 
 	$form['name'] = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
 	if ($form['name'] === "") {
@@ -30,15 +35,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if ($form['email'] === '') {
 		$error['email'] = 'blank';
 	} else {
-		$pdo = getPdoInstance();
+		// メールの重複確認
+		$pdo = Database::getInstance();
+		$register = new Register($pdo, $form['email']);
+		$after_check_email = $register->checkEmail();
 
-		$stmt = $pdo->prepare("SELECT COUNT(*) AS email FROM users WHERE email = :email");
-		$stmt->bindValue('email', $form['email'], PDO::PARAM_STR);
-		$stmt->execute();
-
-		$count = $stmt->fetch();
-		if ($count->email > 0) {
-			$error['email'] = 'duplicate';
+		if ($after_check_email !== NULL) {
+			$error['email'] = $after_check_email;
 		}
 	}
 
@@ -68,27 +71,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		exit();
 	}
 }
+if (isset($_SESSION['error']) && $_SESSION['error'] === 'register') {
+	$error['register'] = 'blank';
+}
 
 // header
 require_once(__DIR__ . '/../../app/_parts/_header.php');
 ?>
-
+<?php if (isset($error['register']) && $error['register'] === 'blank') : ?>
+	<p class="error">* 入力中にエラーが発生しました。もう一度入力してください</p>
+	<?php unset($_SESSION['error']); ?>
+<?php endif; ?>
 <h2 class="section-title">次のフォームに必要事項をご記入ください</h2>
 <section class="member-register">
 	<form action="" method="post">
-		<input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
+		<input type="hidden" name="token" value="<?php echo Utils::h($_SESSION['token']); ?>">
 		<dl class="register-list">
-			<dt>ユーザー名<span class="required">必須</span></dt>
+			<dt>ユーザー名</dt>
 			<dd>
-				<input type="text" name="name" maxlength="255" value="<?php echo h($form['name']); ?>" />
+				<input type="text" name="name" maxlength="255" value="<?php echo Utils::h($form['name']); ?>" />
 				<?php if (isset($error['name']) && $error['name'] === 'blank') : ?>
 					<p class="error">* ユーザー名を入力してください</p>
 				<?php endif; ?>
 			</dd>
 
-			<dt>メールアドレス<span class="required">必須</span></dt>
+			<dt>メールアドレス</dt>
 			<dd>
-				<input type="text" name="email" maxlength="255" value="<?php echo h($form['email']); ?>" />
+				<input type="text" name="email" maxlength="255" value="<?php echo Utils::h($form['email']); ?>" />
 				<?php if (isset($error['email']) && $error['email'] === 'blank') : ?>
 					<p class="error">* メールアドレスを入力してください</p>
 				<?php endif; ?>
@@ -100,7 +109,7 @@ require_once(__DIR__ . '/../../app/_parts/_header.php');
 				<?php endif; ?>
 			</dd>
 
-			<dt>パスワード<span class="required">必須</span></dt>
+			<dt>パスワード</dt>
 			<dd>
 				<input type="password" name="password" maxlength="20" value="" />
 				<?php if (isset($error['password']) && $error['password'] === 'blank') : ?>
@@ -113,18 +122,18 @@ require_once(__DIR__ . '/../../app/_parts/_header.php');
 
 			<dt>
 				登録する２人のニックネームを<br>
-				入力してください<span class="required">必須</span>
+				入力してください
 			</dt>
 			<dd class="select-gender">
 				<label>
 					<i class="bi bi-gender-male text-primary"></i>
 					<input type="hidden" name="male_num" value="1">
-					<input type="text" name="male_name" maxlength="10" value="<?php echo h($form['male_name']); ?>">
+					<input type="text" name="male_name" maxlength="10" value="<?php echo Utils::h($form['male_name']); ?>">
 				</label>
 				<label>
 					<i class="bi bi-gender-female text-danger"></i>
 					<input type="hidden" name="female_num" value="2">
-					<input type="text" name="female_name" maxlength="10" value="<?php echo h($form['female_name']); ?>">
+					<input type="text" name="female_name" maxlength="10" value="<?php echo Utils::h($form['female_name']); ?>">
 				</label>
 				<?php if (isset($error['couple']) && $error['couple'] === 'blank') : ?>
 					<p class="error">* ２人のニックネームを入力してください</p>

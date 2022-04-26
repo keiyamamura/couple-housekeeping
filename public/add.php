@@ -1,8 +1,16 @@
 <?php
 require(__DIR__ . '/../app/config.php');
 
-$pdo = getPdoInstance();
-createToken();
+use App\BookAdd;
+use App\Database;
+use App\InfoId;
+use App\Member;
+use App\Route;
+use App\Token;
+use App\Utils;
+
+Token::create();
+$pdo = Database::getInstance();
 
 if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
 	$get_id = ($_SESSION['id']);
@@ -13,14 +21,16 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
 	if (!$get_gender_num || $get_gender_num >= 3) {
 		header('Location: ' . MAIN_URL);
 	}
-	$member = getMembersData($pdo, $get_id, $get_gender_num);
+	$member_info = new Member($pdo, $get_id, $get_gender_num);
+	$member = $member_info->getData();
 
 	// 項目データの取得
 	$get_item_id = filter_input(INPUT_GET, 'item', FILTER_SANITIZE_NUMBER_INT);
 	if (!$get_item_id || $get_item_id >= 4) {
 		header('Location: ' . MAIN_URL);
 	}
-	$item = checkItemData($pdo, $get_item_id);
+	$item = new InfoId($pdo, $get_item_id);
+	$item = $item->getItemData();
 } else {
 	header('Location: ' . LOGIN_URL);
 	exit();
@@ -29,7 +39,7 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
 $error = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	validateToken();
+	Token::validate();
 
 	$purchase_date = filter_input(INPUT_POST, 'purchase_date', FILTER_SANITIZE_NUMBER_INT);
 	if ($purchase_date === '') {
@@ -45,16 +55,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 
 	if (empty($error)) {
-		$stmt = $pdo->prepare(
-			"INSERT INTO books (member_id, item_id, purchase_date, purchase_price, memo)
-       VALUES (:member_id, :item_id, :purchase_date, :purchase_price, :memo)"
-		);
-		$stmt->bindValue('member_id', $member->id, PDO::PARAM_INT);
-		$stmt->bindValue('item_id', $item->id, PDO::PARAM_INT);
-		$stmt->bindValue('purchase_date', $purchase_date, PDO::PARAM_STR);
-		$stmt->bindValue('purchase_price', $purchase_price, PDO::PARAM_INT);
-		$stmt->bindValue('memo', $memo, PDO::PARAM_STR);
-		$result = $stmt->execute();
+		$book = new BookAdd($pdo, $item->id, $member->id, $purchase_date, $purchase_price, $memo);
+		$result = $book->add();
 
 		if ($result) {
 			$_SESSION['success_message'] = '登録が完了しました';
@@ -62,28 +64,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$error['message'] = 'blank';
 		}
 
-		$stmt = null;
-
-		define('ADD_URL', addUrl($item->id, $member->gender));
+		$url = new Route($item->id, $member->gender);
+		define('ADD_URL', $url->getAddPageUrl());
 		header("Location: " . ADD_URL);
 		exit();
 	}
 }
-
 // header
 require_once(__DIR__ . '/../app/_parts/_header.php');
 ?>
 
 <section id="add_page">
-	<h3 class="amount"><span><?php echo h($member->name); ?>(<?php echo h($item->name); ?>)</span>追加</h3>
+	<h3 class="amount"><span><?php echo Utils::h($member->name); ?>(<?php echo Utils::h($item->name); ?>)</span>追加</h3>
 	<?php if (!empty($_SESSION['success_message'])) : ?>
 		<p class="success_message">
-			<?php echo h($_SESSION['success_message']); ?>
+			<?php echo Utils::h($_SESSION['success_message']); ?>
 			<?php unset($_SESSION['success_message']); ?>
 		</p>
 	<?php endif; ?>
-	<form action="" method="post" onsubmit="return func1()" id="add_form">
-		<input type="hidden" name="token" value="<?php echo h($_SESSION['token']); ?>">
+	<form action="" method="post" >
+		<input type="hidden" name="token" value="<?php echo Utils::h($_SESSION['token']); ?>">
 		<ul class="book-register">
 			<li>
 				<label>
@@ -102,7 +102,7 @@ require_once(__DIR__ . '/../app/_parts/_header.php');
 			<li>
 				<label>
 					メモ：
-					<input type="text" name="memo" maxlength="15" data-type="memo" value="">
+					<input type="text" name="memo" maxlength="10" data-type="memo" value="">
 				</label>
 			</li>
 		</ul>
