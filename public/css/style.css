@@ -1,0 +1,425 @@
+/*
+html5doctor.com Reset Stylesheet
+v1.6.1
+Last Updated: 2010-09-17
+Author: Richard Clark - http://richclarkdesign.com
+Twitter: @rich_clark
+*/
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+    margin:0;
+    padding:0;
+    border:0;
+    outline:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+body {
+    line-height:1;
+}
+
+article,aside,details,figcaption,figure,
+footer,header,hgroup,menu,nav,section {
+    display:block;
+}
+
+nav ul {
+    list-style:none;
+}
+
+blockquote, q {
+    quotes:none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content:'';
+    content:none;
+}
+
+a {
+    margin:0;
+    padding:0;
+    font-size:100%;
+    vertical-align:baseline;
+    background:transparent;
+}
+
+/* change colours to suit your needs */
+ins {
+    background-color:#ff9;
+    color:#000;
+    text-decoration:none;
+}
+
+/* change colours to suit your needs */
+mark {
+    background-color:#ff9;
+    color:#000;
+    font-style:italic;
+    font-weight:bold;
+}
+
+del {
+    text-decoration: line-through;
+}
+
+abbr[title], dfn[title] {
+    border-bottom:1px dotted;
+    cursor:help;
+}
+
+table {
+    border-collapse:collapse;
+    border-spacing:0;
+}
+
+/* change border colour to suit your needs */
+hr {
+    display:block;
+    height:1px;
+    border:0;
+    border-top:1px solid #cccccc;
+    margin:1em 0;
+    padding:0;
+}
+input, select {
+    vertical-align:middle;
+}
+
+/* common  */
+body {
+  font-family: 'Kosugi Maru', sans-serif;
+  background: mintcream;
+}
+a {
+  text-decoration: none;
+  color:#000;
+}
+ul {
+  list-style: none;
+}
+.main-title {
+  font-family: 'Potta One', cursive;
+  font-size: 2rem;
+}
+.section-title {
+  margin-bottom: 4.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  background: rgba(245, 222, 179, 0.7);
+  padding: 1.25rem;
+  border-radius: 4px;
+  border: 4px solid #bdc1c5;
+}
+.required {
+  background: rgba(255, 0, 0, .6);
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: white;
+  text-shadow: 1px 1px black;
+  margin-left: 6px;
+}
+.error {
+  color: red;
+  margin: .6rem 0;
+}
+.hide {
+  display: none;
+}
+.success_message {
+  margin: 0.6rem 0;
+  color: green;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+.btn {
+  font-weight: bold;
+}
+.register-list {
+  color: darkgreen;
+}
+.register-list dt {
+  font-size: 1.2rem;
+  line-height: 1.3rem;
+  padding-bottom: 0.5rem;
+}
+.register-list dd {
+  margin-bottom: 2rem;
+}
+.register-list .select-gender label i {
+  font-size: 2rem;
+  vertical-align: middle;
+}
+.register-list .select-gender label span {
+  vertical-align: middle;
+}
+
+#content {
+  padding: 36px;
+}
+
+/* header */
+header {
+  border-bottom: 4px solid green;
+  padding: 2.3rem 0 2.3rem 0;
+}
+header .container {
+  position: relative;
+}
+.navbar {
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0;
+}
+.navbar-nav {
+  background-color: mintcream;
+}
+
+.nav-item {
+  color: green;
+}
+.nav-item .btn {
+  margin: 0;
+  border: none;
+  padding: 0.3rem 0.4rem;
+}
+
+/* main */
+main {
+  margin: 4.5rem auto;
+  padding: 0 2%;
+  text-align: center;
+}
+main > .container{
+  padding: 4.5rem 3rem;
+  border: 4px solid #bdc1c5;
+  border-radius: 4px;
+  background:floralwhite;
+  max-width: 900px;
+}
+
+/* public/join/check.php */
+.check-buttons .btn:first-child {
+  border: 1px solid red;
+}
+
+/* public/login.php */
+.section-title .btn {
+  border: none;
+  background-color: transparent;
+  padding: 0;
+}
+.section-title .btn:hover {
+  color: darkgreen;
+}
+
+/* public/index.php */
+.date {
+  margin-bottom: 4rem;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+.prev,
+.next {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.prev:hover,
+.next:hover {
+  color: green;
+}
+.amount {
+  margin-bottom: 1rem;
+  border-bottom: 2px solid red;
+  display: inline-block;
+  font-size: 1.2rem;
+}
+.amount span {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: green;
+}
+#main_page tbody,
+#main_page tfoot{
+  font-size: 1.2rem;
+}
+#main_page tfoot {
+  border-top: 1px solid;
+}
+#main_page tbody th{
+  font-size: 1.2rem;
+  padding: 0;
+}
+#main_page td {
+  padding: 0;
+}
+#main_page .table tbody td .btn {
+  padding: .2rem .5rem;
+  border: none;
+}
+tr {
+  margin-bottom: .5rem;
+}
+tr .detail {
+  margin-top: 1rem;
+}
+th {
+  padding: 0;
+  font-size: 1.2rem;
+}
+td {
+  vertical-align: middle;
+  font-size: 1.2rem;
+}
+.row {
+  margin-bottom: 2rem;
+}
+#male {
+  border-right: 4px solid;
+}
+.category {
+  border: none;
+  font-size: 1.2rem;
+}
+.total {
+  font-size: 1.2rem;
+}
+.total .total-amount {
+  margin-bottom: 1rem;
+}
+.total-amount {
+  width: 17rem;
+  margin: 0 auto;
+  font-weight: bold;
+  background: rgba(245, 222, 179, 0.7);
+  padding: 1.25rem;
+  border-radius: 4px;
+  border: 4px solid #bdc1c5;
+}
+.total span {
+  font-size: 1.4rem;
+  font-weight: bold;
+}
+
+/* public/show.php */
+#show_page {
+  max-width: 600px;
+  margin: 0 auto;
+}
+#show_page .table>:not(caption)>*>* {
+  padding: 0;
+}
+#show_page tbody th {
+  vertical-align: middle;
+  padding: 0;
+}
+#show_page .delete{
+  font-weight: normal;
+  border: none;
+}
+#show_page .detail {
+  margin-top: 1.5rem;
+}
+
+/* public/add.php */
+#add_page .book-register {
+  margin: 2.5rem 0;
+}
+#add_page .book-register li{
+  margin: 1rem 0;
+}
+#add_page .book-register label {
+  font-size: 1.2rem;
+}
+#add_page .modal-header {
+  display: inline-block;
+  font-size: 1.3rem;
+}
+#add_page .modal-body {
+  width: 200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+#add_page .modal-body dt {
+  float: left;
+}
+#add_page .modal-body  dd {
+  margin-bottom: .5rem;
+}
+
+/* footer */
+footer {
+  padding: 3.5rem 0;
+  background: rgb(129, 206, 129);
+  text-align: end;
+}
+footer .main-title a{
+  color:beige
+}
+
+/* SP menu */
+@media screen and (max-width: 575px) {
+  /* SP - common */
+  .section-title {
+    margin-bottom: 2.5rem;
+    font-weight: normal;
+    font-size: .875rem;
+    padding: .5rem;
+  }
+
+  /* SP - header */
+  header {
+    padding: 1.3rem 0 1.3rem 0;
+  }
+  .navbar {
+    width: 7rem;
+  }
+  .navbar .container {
+    display: block;
+    text-align: center;
+  }
+  .navbar-nav {
+    margin: .5rem 0;
+  }
+
+  /* SP - main */
+  main {
+    margin: 2.5rem auto;
+  }
+  main .container {
+    padding: 2.5rem 1rem;
+  }
+
+  /* SP - public/join/index.php */
+  .register-list .select-gender label + label {
+    margin-top: .5rem;
+  }
+
+  /* SP - public/index.php  */
+  #male {
+    border-right: none;
+    border-bottom: 4px solid;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+  }
+  .date {
+    margin-bottom: 2.5rem;
+  }
+}
