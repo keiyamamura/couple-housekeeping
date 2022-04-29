@@ -28,17 +28,6 @@
       price.textContent = Number(getPrice.value).toLocaleString();
       memo.textContent = getMemo.value;
     });
-
-    // Enterキーが押された時にSubmitされるのを抑制する
-    document.getElementById("add_form").onkeypress = (e) => {
-      // form1に入力されたキーを取得
-      const key = e.keyCode || e.charCode || 0;
-      // 13はEnterキーのキーコード
-      if (key == 13) {
-        // アクションを行わない
-        e.preventDefault();
-      }
-    }
   }
 
   const deletes = document.querySelectorAll('.delete');
