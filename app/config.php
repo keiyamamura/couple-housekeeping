@@ -4,9 +4,9 @@ session_start();
 
 date_default_timezone_set('Asia/Tokyo');
 
-define('DSN', 'mysql:host=localhost:8889;dbname=portfolio;charset=utf8mb4');
-define('DB_USER', 'root');
-define('DB_PASS', 'root');
+define('DSN', 'mysql:host=us-cdbr-east-05.cleardb.net;dbname=heroku_6a79aeb16384b48;charset=utf8mb4');
+define('DB_USER', 'be2b50b44c02c4');
+define('DB_PASS', 'f00ad98e');
 define('JOIN_URL', 'http://localhost:8888/portfolio/public/join/');
 define('CHECK_URL', 'http://localhost:8888/portfolio/public/join/check.php');
 define('REWRITE_URL', 'http://localhost:8888/portfolio/public/join/index.php?action=rewrite');
