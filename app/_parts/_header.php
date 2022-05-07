@@ -46,9 +46,9 @@ switch ($page_url) {
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
 	<?php if ($page_url === $check_url['join']) : ?>
-		<link rel="stylesheet" href="../../public/css/style.css">
+		<link rel="stylesheet" href="../css/style.css">
 	<?php else : ?>
-		<link rel="stylesheet" href="../public/css/style.css">
+		<link rel="stylesheet" href="css/style.css">
 	<?php endif; ?>
 	<title>かけいぼ - <?php echo Utils::h($page_title); ?></title>
 </head>
