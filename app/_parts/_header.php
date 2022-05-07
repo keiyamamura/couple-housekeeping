@@ -70,10 +70,10 @@ switch ($page_url) {
 						<ul class="navbar-nav">
 							<?php if ($page_url === $check_url['join']) : ?>
 								<li class="nav-item">
-									<a class="btn <?php echo $page_url !== LOGIN_URL ? 'disabled' : 'btn-outline-success'; ?>" href="<?php echo Utils::h(JOIN_URL); ?>">会員登録</a>
+									<a class="btn <?php echo $page_url === LOGIN_URL ? 'disabled' : 'btn-outline-success'; ?>" href="<?php echo Utils::h(JOIN_URL); ?>">会員登録</a>
 								</li>
 								<li class="nav-item">
-									<a class="btn <?php echo $page_url === LOGIN_URL ? 'disabled' : 'btn-outline-success'; ?>" href="<?php echo Utils::h(LOGIN_URL) ?>">ログイン</a>
+									<a class="btn <?php echo $page_url !== LOGIN_URL ? 'disabled' : 'btn-outline-success'; ?>" href="<?php echo Utils::h(LOGIN_URL) ?>">ログイン</a>
 								</li>
 							<?php endif; ?>
 
