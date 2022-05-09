@@ -32,6 +32,9 @@ switch ($page_url) {
 		$page_title = Utils::h($get_name) . '様';
 	break;
 }
+var_dump($page_url);
+var_dump($check_url);
+var_dump(LOGIN_URL);
 ?>
 <!doctype html>
 <html lang="ja">
