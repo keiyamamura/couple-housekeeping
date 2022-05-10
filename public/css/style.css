@@ -260,6 +260,7 @@ main > .container{
   background: none;
   cursor: pointer;
   transition: .3s;
+  color: #000;
 }
 .prev:hover,
 .next:hover {
