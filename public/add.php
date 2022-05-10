@@ -90,15 +90,15 @@ require_once(__DIR__ . '/../app/_parts/_header.php');
 				<label>
 					日付：
 					<input type="date" name="purchase_date" data-type="date" value="">
-					<p class="error hide" id="error_date">* 日付を入力してください</p>
 				</label>
+				<p class="error hide" id="error_date">* 日付を入力してください</p>
 			</li>
 			<li>
 				<label>
 					金額：
 					<input type="number" step="1" min="1" name="purchase_price" data-type="price" value="">
-					<p class="error hide" id="error_price">* 金額を入力してください</p>
 				</label>
+				<p class="error hide" id="error_price">* 金額を入力してください</p>
 			</li>
 			<li>
 				<label>
