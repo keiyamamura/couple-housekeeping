@@ -15,11 +15,11 @@ class Route
 
 	public function getAddPageUrl()
 	{
-		return "http://localhost:8888/portfolio/public/add.php?item=$this->item_id&gender=$this->gender";
+		return "http://books-portfolio.herokuapp.com/add.php?item=$this->item_id&gender=$this->gender";
 	}
 
 	public function getShowPageUrl()
 	{
-		return "http://localhost:8888/portfolio/public/show.php?item=$this->item_id&gender=$this->gender";
+		return "http://books-portfolio.herokuapp.com/show.php?item=$this->item_id&gender=$this->gender";
 	}
 }
