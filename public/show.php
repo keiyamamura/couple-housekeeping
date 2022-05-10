@@ -14,15 +14,15 @@ $pdo = Database::getInstance();
 Token::create();
 
 if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
-	$get_id = ($_SESSION['id']);
-	$get_name = ($_SESSION['name']);
+	$login_user_id = $_SESSION['id'];
+	$login_user_name = $_SESSION['name'];
 
 	// maleデータ と femaleデータの仕分け
 	$get_gender_num = filter_input(INPUT_GET, 'gender', FILTER_SANITIZE_NUMBER_INT);
 	if (!$get_gender_num || $get_gender_num >= 3) {
 		header('Location: ' . MAIN_URL);
 	}
-	$member_info = new Member($pdo, $get_id, $get_gender_num);
+	$member_info = new Member($pdo, $login_user_id, $get_gender_num);
 	$member = $member_info->getData();
 
 	// 項目データの取得
@@ -66,7 +66,6 @@ if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
 	header('Location: ' . LOGIN_URL);
 	exit();
 }
-
 $url = new Route($get_item_id, $get_gender_num);
 if (empty($url->getShowPageUrl())) {
 	return;

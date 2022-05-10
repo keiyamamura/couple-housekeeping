@@ -16,7 +16,7 @@ class Utils
 	}
 
 	// 現在ページのフルURLを返す
-	public static function getCurrentPageUrl()
+	public static function getCurrentFullUrl()
 	{
 		return (((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')) ? "https://" : "http://") . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}

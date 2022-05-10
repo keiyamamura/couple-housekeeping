@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$pdo->commit();
 	} catch (PDOException $e) {
 		$pdo->rollback();
-		$_SESSION['error'] = 'register';
+		$_SESSION['error_register'] = 'register';
 		header('Location: ' . JOIN_URL);
 		exit();
 	}
