@@ -11,13 +11,13 @@ use App\Utils;
 $pdo = Database::getInstance();
 
 if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
-	$get_id = ($_SESSION['id']);
-	$get_name = ($_SESSION['name']);
+	$login_user_id = $_SESSION['id'];
+	$login_user_name = $_SESSION['name'];
 
 	// memberの取得
 	$member_info = [];
-	$member_info[0] = new Member($pdo, $get_id, 1);
-	$member_info[1] = new Member($pdo, $get_id, 2);
+	$member_info[0] = new Member($pdo, $login_user_id, 1);
+	$member_info[1] = new Member($pdo, $login_user_id, 2);
 	$male = $member_info[0]->getData();
 	$female = $member_info[1]->getData();
 
@@ -153,7 +153,7 @@ require_once(__DIR__ . '/../app/_parts/_header.php');
 			<span><?php Utils::removeDifference($male_subtotal_amount, $female_subtotal_amount); ?></span> 円
 		</div>
 		<div class="total-amount">
-			<p>小計の少ない人が<br>
+			<p>小計の少ない人が、<br>
 				支払う額</p>
 			<span><?php Utils::perPersonAmount($male_subtotal_amount, $female_subtotal_amount); ?></span> 円
 		</div>

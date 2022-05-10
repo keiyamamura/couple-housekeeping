@@ -37,17 +37,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	} else {
 		// メールの重複確認
 		$pdo = Database::getInstance();
-		$register = new Register($pdo, $form['email']);
-		$after_check_email = $register->checkEmail();
+		$register_info = new Register($pdo, $form['email']);
+		$confirmed_email = $register_info->duplicateCheckEmail();
 
-		if ($after_check_email !== NULL) {
-			$error['email'] = $after_check_email;
+		if ($confirmed_email !== NULL && $confirmed_email === 'duplicate') {
+			$error['email'] = $confirmed_email;
 		}
 	}
 
 	$form['password'] = filter_input(INPUT_POST, 'password', FILTER_SANITIZE_STRING);
 	if ($form['password'] === '') {
 		$error['password'] = 'blank';
+	} elseif (!preg_match("/^[a-zA-Z0-9]+$/", $form['password'])) {
+		$error['password'] = 'string';
 	} elseif (strlen($form['password']) < 8) {
 		$error['password'] = 'length';
 	}
@@ -71,16 +73,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		exit();
 	}
 }
-if (isset($_SESSION['error']) && $_SESSION['error'] === 'register') {
+
+if (isset($_SESSION['error_register']) && $_SESSION['error'] === 'register') {
 	$error['register'] = 'blank';
 }
-
 // header
 require_once(__DIR__ . '/../../app/_parts/_header.php');
 ?>
 <?php if (isset($error['register']) && $error['register'] === 'blank') : ?>
 	<p class="error">* 入力中にエラーが発生しました。もう一度入力してください</p>
-	<?php unset($_SESSION['error']); ?>
+	<?php unset($_SESSION['error_register']); ?>
 <?php endif; ?>
 <h2 class="section-title">次のフォームに必要事項をご記入ください</h2>
 <section class="member-register">
@@ -114,7 +116,10 @@ require_once(__DIR__ . '/../../app/_parts/_header.php');
 				<input type="password" name="password" maxlength="20" value="" />
 				<?php if (isset($error['password']) && $error['password'] === 'blank') : ?>
 					<p class="error">* パスワードを入力してください</p>
-				<?php endif ?>
+				<?php endif; ?>
+				<?php if (isset($error['password']) && $error['password'] === 'string') : ?>
+					<p class="error">* 半角英数字で入力してください</p>
+				<?php endif; ?>
 				<?php if (isset($error['password']) && $error['password'] === 'length') : ?>
 					<p class="error">* パスワードは8文字以上で入力してください</p>
 				<?php endif; ?>
