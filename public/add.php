@@ -13,15 +13,15 @@ Token::create();
 $pdo = Database::getInstance();
 
 if (isset($_SESSION['id']) && isset($_SESSION['name'])) {
-	$get_id = ($_SESSION['id']);
-	$get_name = ($_SESSION['name']);
+	$login_user_id = $_SESSION['id'];
+	$login_user_name = $_SESSION['name'];
 
 	// maleデータ と femaleデータの仕分け
 	$get_gender_num = (int) filter_input(INPUT_GET, 'gender', FILTER_SANITIZE_NUMBER_INT);
 	if (!$get_gender_num || $get_gender_num >= 3) {
 		header('Location: ' . MAIN_URL);
 	}
-	$member_info = new Member($pdo, $get_id, $get_gender_num);
+	$member_info = new Member($pdo, $login_user_id, $get_gender_num);
 	$member = $member_info->getData();
 
 	// 項目データの取得
@@ -70,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		exit();
 	}
 }
+
 // header
 require_once(__DIR__ . '/../app/_parts/_header.php');
 ?>
@@ -82,22 +83,22 @@ require_once(__DIR__ . '/../app/_parts/_header.php');
 			<?php unset($_SESSION['success_message']); ?>
 		</p>
 	<?php endif; ?>
-	<form action="" method="post" >
+	<form action="" method="post">
 		<input type="hidden" name="token" value="<?php echo Utils::h($_SESSION['token']); ?>">
 		<ul class="book-register">
 			<li>
 				<label>
 					日付：
 					<input type="date" name="purchase_date" data-type="date" value="">
-					<p class="error hide" id="error_date">* 日付を入力してください</p>
 				</label>
+				<p class="error hide" id="error_date">* 日付を入力してください</p>
 			</li>
 			<li>
 				<label>
 					金額：
 					<input type="number" step="1" min="1" name="purchase_price" data-type="price" value="">
-					<p class="error hide" id="error_price">* 金額を入力してください</p>
 				</label>
+				<p class="error hide" id="error_price">* 金額を入力してください</p>
 			</li>
 			<li>
 				<label>
@@ -122,9 +123,7 @@ require_once(__DIR__ . '/../app/_parts/_header.php');
 					<div class="modal-body">
 						<dl>
 							<dt>日付：</dt>
-							<dd id="date">
-
-							</dd>
+							<dd id="date"></dd>
 							<dt>金額：</dt>
 							<dd id="price"></dd>
 							<dt>メモ：</dt>
