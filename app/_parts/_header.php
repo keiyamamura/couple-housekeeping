@@ -50,7 +50,7 @@ switch ($current_full_url) {
 	<?php else : ?>
 		<link rel="stylesheet" href="css/style.css?<?php echo time(); ?>">
 	<?php endif; ?>
-	<title>かけいぼ - <?php echo Utils::h($page_title); ?></title>
+	<title>カップルかけいぼ - <?php echo Utils::h($page_title); ?></title>
 </head>
 
 <body>
