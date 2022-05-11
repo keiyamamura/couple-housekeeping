@@ -71,7 +71,7 @@ require_once(__DIR__ . '/../../app/_parts/_header.php');
 		<div class="check-buttons">
 			<a href="index.php?action=rewrite" class="btn btn-outline-success">やり直す</a>
 			<span>|</span>
-			<input type="submit" class="btn btn-outline-success" value="登録する">
+			<button class="btn btn-outline-success">登録する</button>
 	</form>
 </section>
 

@@ -98,8 +98,8 @@ hr {
 }
 input, select {
   vertical-align:middle;
-  /* width: 100%;
-  max-width: 200px; */
+  width: 100%;
+  max-width: 200px;
 }
 
 /* common  */
