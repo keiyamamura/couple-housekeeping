@@ -57,7 +57,7 @@ switch ($current_full_url) {
 	<header>
 		<div class="container">
 			<h1 class="main-title">
-				<a href="">かけいぼ</a>
+				<a href="">カップルかけいぼ</a>
 			</h1>
 
 			<nav class="navbar navbar-expand-md navbar-light">
