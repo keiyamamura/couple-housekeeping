@@ -24,9 +24,9 @@ class Calendar
 		$next = date('Y-m', strtotime('+1 month', $unixmonth)); //次月の算出
 
 		$calendar_output = '<caption class="rsv_calendar">' . "\n\t" . '<form action="" method="post">';
-		$calendar_output .= "\n\t\t" . '<input class="next" type="submit" name="calendar[' . $prev . '*' . $this->date . ']" value="&laquo;">';
+		$calendar_output .= "\n\t\t" . '<input class="prev" type="submit" name="calendar[' . $prev . '*' . $this->date . ']" value="&laquo;">';
 		$calendar_output .= "\n\t\t" . $this->year . '年' . $this->month . '月';
-		$calendar_output .= "\n\t\t" . '<input class="prev" type="submit" name="calendar[' . $next . '*' . $this->date . ']" value="&raquo;">';
+		$calendar_output .= "\n\t\t" . '<input class="next" type="submit" name="calendar[' . $next . '*' . $this->date . ']" value="&raquo;">';
 		$calendar_output .= "\n\t\t" . '<input type="hidden" name="token" value="' . $this->token . '">';
 		$calendar_output .= "\n\t</form>\n</caption>";
 
