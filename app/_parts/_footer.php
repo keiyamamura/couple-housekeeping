@@ -4,7 +4,7 @@
 <footer>
 	<div class="container">
 		<h1 class="main-title">
-			<a href="">かけいぼ</a>
+			<a href="">カップルかけいぼ</a>
 		</h1>
 	</div>
 </footer>
