@@ -4,9 +4,16 @@ session_start();
 
 date_default_timezone_set('Asia/Tokyo');
 
-define('DSN', 'mysql:host=us-cdbr-east-05.cleardb.net;dbname=heroku_6a79aeb16384b48;charset=utf8mb4');
-define('DB_USER', 'be2b50b44c02c4');
-define('DB_PASS', 'f00ad98e');
+// heroku 登録時のDB情報
+// define('DSN', 'mysql:host=us-cdbr-east-05.cleardb.net;dbname=heroku_6a79aeb16384b48;charset=utf8mb4');
+// define('DB_USER', 'be2b50b44c02c4');
+// define('DB_PASS', 'f00ad98e');
+
+// ローカル環境
+define('DSN', 'mysql:host=localhost;dbname=portfolio;charset=utf8mb4');
+define('DB_USER', 'root');
+define('DB_PASS', 'root');
+
 define('JOIN_URL', 'http://couple-housekeeping.herokuapp.com/join/');
 define('CHECK_URL', 'http://couple-housekeeping.herokuapp.com/join/check.php');
 define('REWRITE_URL', 'http://couple-housekeeping.herokuapp.com/join/index.php?action=rewrite');
